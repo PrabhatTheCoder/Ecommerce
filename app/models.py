@@ -37,6 +37,8 @@ class Product(models.Model):
     category = models.CharField(max_length=2, choices=CATEGORY_CHOICES)
     product_image = models.ImageField(upload_to='productimg', height_field=None, width_field=None, max_length=None)
 
+    
+        
     def __str__(self):
         return str(self.id)
     
@@ -47,6 +49,11 @@ class Cart(models.Model):
 
     def __str__(self):
         return str(self.id)
+    
+    @property
+    def total_cost(self):
+        total_cost = self.quantity * self.product.selling_price
+        return total_cost
     
     
 STATUS_CHOICES = (
@@ -66,3 +73,8 @@ class OrderPlaced(models.Model):
 
     def __str__(self):
         return str(self.id)
+    
+    @property
+    def total_cost(self):
+        total_cost = self.quantity * self.product.selling_price
+        return total_cost
