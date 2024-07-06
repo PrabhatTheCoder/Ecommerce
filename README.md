@@ -1,2 +1,2 @@
 # E-Comm
-This is a Static DJango Shopping Website 
+This is a Django Shopping Website 
