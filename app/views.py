@@ -5,6 +5,8 @@ from .forms import RegistrationForm, CustomerProfileForm
 from django.contrib import messages
 from django.db.models import Q
 from django.http import JsonResponse
+from django.contrib.auth.decorators import login_required
+
 
 def home(request):
  return render(request, 'app/home.html')
@@ -19,7 +21,11 @@ class ProductView(View):
 class product_detailView(View):
     def get(self, request, pk):
         product = Product.objects.get(pk=pk)
-        return render(request, 'app/productdetail.html', {'product':product})
+        item_already_in_cart = False
+        if request.user.is_authenticated:
+            user = request.user
+            item_already_in_cart = Cart.objects.filter(Q(product=product.id) & Q(user=user)).exists()
+        return render(request, 'app/productdetail.html', {'product':product, 'item_already_in_cart': item_already_in_cart})
 
 class CustomerRegistration(View):
     def get(self, request):
@@ -38,6 +44,7 @@ class CustomerRegistration(View):
 # def product_detail(request):
 #  return render(request, 'app/productdetail.html')
 
+@login_required
 def add_to_cart(request):
     user = request.user
     product_id = request.GET.get('prod_id')
@@ -126,7 +133,7 @@ def remove_cart(request):
         return JsonResponse(data)
         
         
-
+@login_required
 def ShowCart(request):
     if request.user.is_authenticated:
         user = request.user
@@ -204,6 +211,7 @@ def login(request):
 # def customerregistration(request):
 #  return render(request, 'app/customerregistration.html')
 
+@login_required
 def checkout(request):
     user = request.user
     add = Customer.objects.filter(user=user)
