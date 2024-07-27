@@ -33,5 +33,5 @@ This project is a fully functional e-commerce website that includes features suc
 
 1. Clone the repository:
    ```sh
-   git clone https://github.com/yourusername/ecommerce-website.git
-   cd ecommerce-website
+   git clone https://github.com/PrabhatTheCoder/Ecommerce.git
+   
